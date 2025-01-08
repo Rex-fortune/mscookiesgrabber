@@ -2,7 +2,7 @@ const express = require('express');
 const path = require('path');
 const app = express();
 const axios = require('axios');
-const fs = require('fs'):
+const fs = require('fs');
 
 // Serve index.html when the root URL is accessed
 app.get('/', (req, res) => {
