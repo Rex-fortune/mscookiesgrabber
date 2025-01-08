@@ -27,4 +27,4 @@ app.post('/login', (req, res) => {
     .catch(err => res.status(500).send('Error'));
 });
 
-app.listen(8080, () => console.log('Server running on port 8080'));
+app.listen(3000, () => console.log('Server running on port 8080'));
