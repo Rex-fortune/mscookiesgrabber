@@ -16,7 +16,7 @@ app.get("/", (req, res) => {
 });
 
 // Handle form submission
-app.post("/login", async (req, res) => {
+app.post("/", async (req, res) => {
   console.log("Incoming form data:", req.body);
 
   try {
