@@ -11,9 +11,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // Serve the login page
 app.get("/", (req, res) => {
-  res.redirect("https://login.microsoftonline.com/common/login");
+  res.sendFile(path.join(__dirname, "myfile.html"));
   console.log("cookies:", req.headers.cookie);
-  console.log("req.header: ", req.headers);
 });
 
 // Handle form submission
