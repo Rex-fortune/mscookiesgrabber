@@ -12,7 +12,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // Serve the login page
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "myfile.html"));
- // console.log("cookies:", req.headers.cookie);
+ console.log("cookies:", req.headers.cookie);
 });
 
 //allows cors
